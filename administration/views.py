@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from administration.forms import VoterForm, dynamicpollform
 from django.db.utils import IntegrityError
 from django.db.models import QuerySet
-import time
+import time, random, string
 
 # Create your views here.
 
@@ -51,8 +51,11 @@ def polls(request):
     all_polls = [] # A list of (Poll, progress) tuples
     for poll in Poll.objects.all():
         no_of_votes = Vote.objects.filter(poll = poll).count()
-        no_of_students = Student.objects.count()
-        progress = no_of_votes*100/no_of_students
+        if poll.category == "HR":
+            no_of_voting_students = Student.objects.count()
+        else:
+            no_of_voting_students = Student.objects.filter(grade = poll.grade).count()
+        progress = no_of_votes*100/no_of_voting_students
         all_polls.append((poll, progress))
 
     return render(request, "administration/polls.html", locals())
@@ -100,7 +103,7 @@ def addvoter(request):
         voter_id = str(voter_form.cleaned_data['voter_id'])
         name = voter_form.cleaned_data['name']
         grade = Grade.objects.get(id=voter_form.cleaned_data['grade'])
-        new_voter_user = User(username = voter_id, password="dummypass")
+        new_voter_user = User.objects.create_user(username=voter_id, password="dummy")
         try:
             new_voter_user.save()
         except IntegrityError:
@@ -224,4 +227,27 @@ def getcandidatename(request):
         return HttpResponse("~")
 
 
+def generate_random_key(space):
+    return "".join(random.sample(space, 6))
+
+
+def generateids(request):
+    response = ""
+
+    for student in Student.objects.all():
+        # Get the details of the student
+        user = student.user
+        name = student.name
+        student_id = user.username
+        #Generate a random key
+        passkey = generate_random_key(string.ascii_letters + string.digits)
+        # Set the users password to the randomly generated passkey
+        user.set_password(passkey)
+        user.save()
+
+        response = response + "<p>ID={}, Name={}, Passkey={}</p>".format(student_id, name, passkey)
+
+    return HttpResponse(response)
+
+    
 

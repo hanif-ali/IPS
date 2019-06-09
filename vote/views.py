@@ -86,7 +86,7 @@ def cast(request, poll_id, candidate_id):
 
     #Get the selected candidate's data and current time
     candidate = Candidate.objects.get(id=candidate_id)
-    poll_date = time.strftime("%Y-%m:%D")
+    poll_date = time.strftime("%Y-%m-%d")
     poll_time = time.strftime("%H:%M:%S")
 
     #Add a vote for the selected candidate in the Vote table

@@ -39,5 +39,6 @@ urlpatterns = [
     path('manage/polls/delete/<int:poll_id>', adminviews.deletepoll),
     path('manage/polls/analysis/<int:poll_id>', adminviews.pollanalysis),
 
+    path('manage/generateids', adminviews.generateids)
 
 ]
