@@ -25,7 +25,7 @@ def index(request):
     last_vote_time = last_vote.poll_time
 
     date_now = time.strftime("%D")
-    time_now = time.strftime("%H:%m")
+    time_now = time.strftime("%H:%M")
 
 
     #Data for charts
