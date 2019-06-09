@@ -1,0 +1,56 @@
+{% extends 'vote/base.html' %}
+{% load static %}
+
+{% block title %}Cast Your Vote{% endblock %}
+
+{% block headline %} 
+	{% if all_casted %}
+		{{student.name}}, You Have Hasted All Your Votes For The Polls 
+		Below. Kindly <a href="/logout/" style="color:black;font-weight:bold">Log Out</a>.
+	{% else %}
+		{% if request.GET.vote_casted %}
+			{{student.name}}, Your Vote Has Been Casted. 
+			Please Select The Next Poll
+		{% else %} 
+			Welcome {{student.name}}! Cast Your Votes Below.
+		{% endif %}
+	{% endif %}
+{% endblock %}
+	
+{% block content %}
+
+<!-- Cards representing Polls -->
+
+<div class="row px-4">
+
+	{% comment %}
+	poll.0 is a boolean representing whether or not the logged in student has already voted for the iterating poll.
+	poll.1 gives us the actual object representing the current poll.
+	{% endcomment %}
+
+	{% for poll in polls %}
+
+	<div class="col-lg-3 col-md-4 col-sm-6 my-2">
+		<div class="card {% if poll.0 %}bg-secondary{% else %}bg-primary{% endif %}">
+		    <div class="card-header text-center">
+			    <p class="card-text font-weight-bold">{{poll.1.house.name}} {{poll.1.category}}<span class="badge badge-success ml-3">{{poll.1.grade.name}}</span></p>
+		    </div>
+		    <img class="card-img-top embed-responsive w-75 align-self-center" src="{% static 'vote/images/sample.png' %}"/>
+		    <div class="card-body text-center">
+			    <p class="card-text">{{poll.1.candidates.all|length}} Candidates</p>
+		    </div>
+		    <div class="card-footer text-center">
+			    {# This button gets changed depending on poll.0 #}
+			    <button class="btn btn-primary" onclick="document.location='/vote/{{poll.1.id}}/';" style="width:100%; height:100%" 
+			    {% if poll.0 %}disabled{% endif %}>{% if poll.0 %}Voted{% else %}Cast Your Vote{% endif %}</a>
+		    </div>
+	    </div>
+	</div>
+	
+	{% endfor %}
+</div>
+
+
+<!-- End of Cards -->
+
+{% endblock %}

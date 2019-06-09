@@ -1,0 +1,290 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Admin</title>
+  <!-- plugins:css -->
+  <link rel="stylesheet" href="{% static '/administration/vendors/iconfonts/mdi/css/materialdesignicons.min.css' %}">
+  <link rel="stylesheet" href="{% static '/administration/vendors/css/vendor.bundle.base.css' %}">
+  <link rel="stylesheet" href="{% static '/administration/vendors/css/vendor.bundle.addons.css' %}">
+  <!-- endinject -->
+
+  <!-- inject:css -->
+  <link rel="stylesheet" href="{% static 'administration/css/style.css' %}">
+  <!-- endinject -->
+
+  <link rel="shortcut icon" href="images/favicon.png" />
+
+  {% block addcss %}{% endblock %}
+
+</head>
+
+<body>
+<!-- New Poll Modal -->
+<div class="modal fade" id="newPollModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>ADD A NEW POLL</h4>
+				<button type="button" class="close" data-dismiss="modal">&times</button>
+			</div>
+			<div class="modal-body">
+				<form action="/manage/polls/add" method="POST">
+					{% csrf_token %}
+					<div class="input-group">
+						<select class="form-control m-1" name = "grade" id="grade" required>
+							<option>Select Grade</option>
+							{% for grade in grades %}
+							<option value="{{grade.id}}">{{grade.name}}</option>
+							{% endfor %}
+						</select>
+						<select class="form-control m-1" name="category" required>
+							<option>Select Category</option>
+							<option value="HR">HR</option>
+							<option value="CR">CR</option>
+						</select>
+					</div>
+					<div class="input-group">
+						<select class="form-control m-1" name="house" required>
+							<option>Select House</option>
+							{% for house in houses %}
+							<option value="{{house.id}}">{{house.name}}</option>
+							{% endfor %}
+						</select>
+						<input type="number" class="form-control m-1" name="number_of_candidates" placeholder="Number of Candidates" onchange="loadcandidatefields(this);">
+					</div>
+
+
+					<div id="candidatefields"> </div>
+
+					<div class="input-group mt-2">
+						<input type="submit" class="btn btn-primary ml-2" value="Next" class="form-control">
+						<button type="button" class="btn btn-secondary ml-2" value="Next" data-dismiss="modal" class="form-control">Cancel</button>
+					</div>
+				</form>
+					
+
+			</div>
+		</div>
+	</div>
+</div>
+
+  <div class="container-scroller">
+
+    <!-- partial:partials/_navbar.html -->
+    <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+      <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
+        <a class="navbar-brand brand-logo" href="/manage">
+		<img src="{% static 'administration/images/logo.svg' %}" alt="logo" />
+        </a>
+        <a class="navbar-brand brand-logo-mini" href="/manage">
+		<img src="{% static 'administration/images/logo-mini.svg' %}" alt="logo" />
+        </a>
+      </div>
+      <div class="navbar-menu-wrapper d-flex align-items-center">
+        <ul class="navbar-nav navbar-nav-right">
+          <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+              <span class="profile-text">Hello, Hanif Ali !</span>
+	      <img class="img-xs rounded-circle" src="{% static 'administration/images/sample_profile.jpg' %}" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+              <a class="dropdown-item p-0">
+                <div class="d-flex border-bottom">
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-bookmark-plus-outline mr-0 text-gray"></i>
+                  </div>
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center border-left border-right">
+                    <i class="mdi mdi-account-outline mr-0 text-gray"></i>
+                  </div>
+                  <div class="py-3 px-4 d-flex align-items-center justify-content-center">
+                    <i class="mdi mdi-alarm-check mr-0 text-gray"></i>
+                  </div>
+                </div>
+              </a>
+              <a class="dropdown-item mt-2">
+                Manage Admins 
+              </a>
+              <a class="dropdown-item">
+               Change Password
+              </a>
+              <a class="dropdown-item">
+                Check Inbox
+              </a>
+              <a class="dropdown-item">
+                Sign Out
+              </a>
+            </div>
+          </li>
+        </ul>
+        <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+          <span class="mdi mdi-menu"></span>
+        </button>
+      </div>
+    </nav>
+
+
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial:partials/_sidebar.html -->
+      <nav class="sidebar sidebar-offcanvas" id="sidebar">
+        <ul class="nav">
+          <li class="nav-item nav-profile">
+            <div class="nav-link">
+              <div class="user-wrapper">
+                <div class="profile-image">
+                  <img src="{% static 'administration/images/sample_profile.jpg' %}" alt="profile image">
+                </div>
+                <div class="text-wrapper">
+                  <p class="profile-name">Hanif Ali</p>
+                  <div>
+                    <small class="designation text-muted">Manager</small>
+                    <span class="status-indicator online"></span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-success btn-block" data-toggle="modal" data-target="#newPollModal">New Poll
+                <i class="mdi mdi-plus"></i>
+              </button>
+            </div>
+          </li>
+          <li class="nav-item" id="dashboardlink">
+            <a class="nav-link" href="/manage">
+              <i class="menu-icon mdi mdi-television"></i>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/manage/polls">
+              <i class="menu-icon mdi mdi-content-copy"></i>
+              <span class="menu-title">Polls</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/manage/voters">
+              <i class="menu-icon mdi mdi-table"></i>
+              <span class="menu-title">Voters</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
+              <i class="menu-icon mdi mdi-restart"></i>
+              <span class="menu-title">Tasks</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="auth">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Generate IDs</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Clear All Polls </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Import</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Export</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#"> 500 </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="pages/icons/font-awesome.html">
+              <i class="menu-icon mdi mdi-sticker"></i>
+              <span class="menu-title">Settings</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">
+		{% block content %}{% endblock %}
+        </div>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html -->
+        <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2019
+              <a href="http://linkedin.com/hanifali" target="_blank">Hanif Ali</a>. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+              <i class="mdi mdi-heart text-danger"></i>
+            </span>
+          </div>
+        </footer>
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <!-- plugins:js -->
+  <script src="{% static 'administration/vendors/js/vendor.bundle.base.js' %}"></script>
+  <script src="{% static 'administration/vendors/js/vendor.bundle.addons.js' %}"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page-->
+  <!-- End plugin js for this page-->
+  <!-- inject:js -->
+  <script src="{% static 'administration/js/off-canvas.js' %}"></script>
+  <script src="{% static 'administration/js/misc.js' %}"></script>
+  <!-- endinject -->
+  {% block addscript %}{% endblock %}
+
+
+	<script>
+
+		// Dirty JavaScript for the Candidate Selection Fields in New Poll Modal
+
+		// This function takes in a field containing the number of candidates and creates a string candidate_html
+		// containing HTML for the exact number of candidate selection fields as specified by that number
+		// The HTML is added to the #candidatefields div
+
+		function loadcandidatefields(field){
+			number_of_candidates = field.value; // Desired number of candidates
+			candidate_html = ""; //String containing HTML data. This is later appended into candidatefields div
+
+			for(i=0;i<number_of_candidates;i++){
+				
+				candidate_html = candidate_html+"<h6>Candidate "+(i+1).toString()+"</h6>\n";	
+				candidate_html = candidate_html+"<div class='input-group'>\n";	
+				candidate_html = candidate_html+"<input type='number' onchange='loadcandidatename(this);' class='form-control' placeholder='ID' meta='"+i+"' id='candidateid"+i+"' name='candidateid"+i+"' required> \n";	
+				candidate_html = candidate_html+"<input type='text' class='form-control' placeholder='Name' name='candidatename"+i+"' id='candidatename"+i+"' disabled required>\n";	
+				candidate_html = candidate_html+"<input type='file' class='form-control' class='id'>\n";	
+				candidate_html = candidate_html+"</div>\n\n";
+			}
+			$("#candidatefields").append(candidate_html); // Add the HTML
+
+		};
+
+		// This function takes in a field with a candidate ID and displays the name of the candidate in the 
+		// corresponding name field. It uses AJAX to find the data from the database 
+		// In case the ID is not found, ~ is returned by the server and the field is set to Invalid ID
+
+		function loadcandidatename(field){
+			candidate_meta = $(field).attr('meta');	// Candidate's fields number (zero-indexed)
+			candidate_id = $(field).val();
+			$.get('/manage/ajaxhandlers/getcandidatename?id='+candidate_id, function(response){
+				if(response=="~"){
+					$("#candidatename"+candidate_meta.toString()).val("Invalid ID");
+					$("#candidatename"+candidate_meta.toString()).attr("style", "color:red;");
+				}else{
+					$("#candidatename"+candidate_meta.toString()).val(response);
+					$("#candidatename"+candidate_meta.toString()).attr("style", "color:black;");
+				}
+			});
+		}
+
+	</script>
+
+</body>
+
+</html>

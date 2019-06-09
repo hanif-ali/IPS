@@ -1,0 +1,21 @@
+{% extends 'vote/base.html' %}
+{% load static %}
+
+{% block title %}Cast Your Vote{% endblock %}
+
+{% block headline %}{{student.name}}, Kindly Select Any Of The Following Candidates For {{poll.house.name}} {{poll.category}}{% endblock %}
+	
+{% block content %}
+
+<div class="row px-3 mb-5 mx-2">
+	{% for candidate in candidates %}
+	<div class="col-lg-3 col-md-4 col-sm-6 col-xs-6 border px-0 pb-3" onclick="candidateselect(this)">
+		<div class="candidate-header bg-dark text-center" candidate_id="{{candidate.id}}" house="{{poll.house.name}}" poll_id = "{{poll.id}}">{{candidate.student.name}}</div>
+	    <div class="text-center">
+		    <img src="{% static 'vote/images/sample.png' %}" class="candidate-symbol embed-responsive"/>
+	    </div>
+	</div>
+	{% endfor %}
+</div>
+
+{% endblock %}

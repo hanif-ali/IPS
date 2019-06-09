@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vote/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vote/vendor/animate/animate.min.css' %}" rel="stylesheet">
+    <script src="{% static 'vote/vendor/wow/wow.min.js' %}"></script>
+
+    <!-- Custom CSS for this Application -->
+    <link rel="stylesheet" href="{% static 'vote/css/style.css' %}"/>
+    {% block addcss %}{% endblock %}
+
+  </head>
+
+  <body class="bg-info">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container p-0">
+      <a class="navbar-brand" href="#">{% block navtitle %}HOUSE SYSTEM ELECTIONS PORTAL{% endblock %}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Vote
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+		    <a class="nav-link" href="#"><span data-toggle="modal" data-target="#helpModal">Help</span></a>
+            </li>
+            <li class="nav-item">
+		    <a class="nav-link" href="/logout/">Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+
+
+    <!-- headline --> 
+    <div class="alert alert-success mx-3 mt-2" style="background:rgba(0,255,0,0.1);border:1px solid #000000;color:black">
+    {% block headline %}{% endblock %}
+    </div>
+    <!-- end of headline-->
+
+
+
+    <!-- Content -->
+    {% block content %}{% endblock %}
+    <!-- End of Content -->
+
+    <!-- Footer-->
+		    
+    <footer class="fixed-bottom bg-dark text-center">
+	    <h7 class="pl-3" style="color:white">Copyrights  Hanif Ali</h7>
+    </footer>
+    <!-- End of Footer -->
+
+
+
+
+    <!-- Help Modal (Hidden Initially) -->
+    <div class="modal fade" id="helpModal" "display:block">
+	    <div class="modal-dialog">
+		   <div class="model-content">
+			   
+			   <div class="modal-body">
+				    <div class="card bg-info">
+					    <div class="card-content">
+						   <div class="card-header">
+							   <h7 class="modal-title font-weight-bold">HOW TO CAST YOUR VOTE</h7>
+							   <button type="button" class="close" data-dismiss="modal">&times</button>
+						   </div>
+
+						   <div class="card-body">
+							   <ol>
+							   <p>To Cast Your Vote:</p>
+							   <li>Click on "Cast Your Vote" button in one of the Polls below.</li>
+							   <li>The next page will show candidates contesting for the selected poll along with their Election Symbols.</li>
+							   <li>Click on any of the candidates to choose.</li>
+							   <li>Repeat the same procedure for all other Polls.</li>
+							   </ol>
+						   </div>
+						   <div class="card-footer">
+							   <button type"button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+						   </div>
+
+					    </div>
+				    </div>
+			   </div>
+		   </div>
+	    </div>
+    </div>
+    <!-- End of Modal -->
+						 
+    
+    <!-- Bootstrap core JavaScript -->
+    <script src="{% static 'vote/js/jquery.min.js' %}"></script>
+    <script src="{% static 'vote/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Custom Javascript for this application -->
+    <script src="{% static 'vote/js/script.js' %}"></script>
+    {% block addjs %}{% endblock %}
+
+  </body>
+
+</html>
+    
+
+

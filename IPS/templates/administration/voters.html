@@ -1,0 +1,170 @@
+{% extends 'administration/base.html' %}
+
+{% block content %}
+
+{# Add Voter Modal #}
+
+<div class="modal fade" id="addVoterModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>Add New Voter</h4>
+				<button type="button" class="close" data-dismiss="modal">&times</button>
+			</div>
+			<div class="modal-body">
+				<form action="/manage/voters/add" method="POST">
+					{% csrf_token %}
+					<div class="input-group">
+						<input class="form-control m-1" type="Number" placeholder="ID" name="voter_id">
+						<select class="form-control m-1" name="grade">
+							<option>Select Grade</option>
+							{% for grade in grades %}
+							<option value="{{grade.id}}">{{grade.name}}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="input-group">
+						<input class="form-control m-1" type="text" placeholder="Name" name="name">
+					</div>
+					<input type="submit" class="m-1 btn btn-primary" value="Add" class="form-control"> 
+					<input class="m-1 btn btn-secondary" value="Cancel" data-dismiss="modal" class="form-control"> 
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{# End of Add Voter Modal #}
+
+{# Search modal #}
+
+<div class="modal fade" id="searchModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4>Search/Filter</h4>
+				<button type="button" class="close" data-dismiss="modal">&times</button>
+			</div>
+			<div class="modal-body">
+				<h6>Search:</h6>
+				<form action="" method="POST">
+					{% csrf_token %}
+					<div class="input-group">
+						<input type="hidden" name="filter_type" value="id">
+						<input class="form-control" name="filter_key" type="Number" placeholder="By ID">
+						<div class="input-group-append">
+							<input type="submit" value="Search" class="form-control"> 
+						</div>
+					</div>
+				</form>
+				<form action="" method="POST" class="mt-2 mb-4">
+					{% csrf_token %}
+					<div class="input-group">
+						<input type="hidden" name="filter_type" value="name">
+						<input class="form-control" type="text" name="filter_key" placeholder="By Name">
+						<div class="input-group-append">
+							<input type="submit" value="Search" class="form-control"> 
+						</div>
+					</div>
+				</form>
+				<h6>Filter By Grade:</h6>
+				<form action="" method="POST" class="">
+					{% csrf_token %}
+					<div class="input-group">
+						<input type="hidden" name="filter_type" value="grade">
+						<select class="form-control" name="filter_key">
+							{% for grade in grades %}
+							<option value="{{grade.name}}">{{grade.name}}</option>
+							{% endfor %}
+						</select>
+						
+						<div class="input-group-append">
+							<input type="submit" value="Filter" class="form-control"> 
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{# End of Search modal #}
+{% if not voters_list %}
+  <div class="alert alert-danger">No Records Found
+  </div>
+{% endif %}
+
+{% if request.GET.id_exists %}
+<div class="alert alert-danger">A Voter with the ID {{request.GET.id_exists}} already exists. Search using the button on right.</div>
+{% endif %}
+
+{% if request.GET.invalid_details %}
+<div class="alert alert-danger">The details you entered are not valid</div>
+{% endif %}
+
+{% if request.GET.voter_deleted %}
+<div class="alert alert-success">The Voter was removed from the database</div>
+{% endif %}
+
+{% if request.GET.voter_added %}
+<div class="alert alert-success">The Voter was added to the database</div>
+{% endif %}
+
+
+  <div class="row">
+	  
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+	<div class="card-body">
+		<h4 class="card-title"><b>VOTERS</b>
+		<button type="button" class="btn btn-outline-primary btn-icons btn-rounded float-right" data-toggle="modal" data-target="#searchModal">
+			<i class="mdi mdi-menu"></i>	
+		</button>  
+		<button class="btn btn-outline-primary btn-icons btn-rounded float-right mr-2" data-toggle="modal" data-target="#addVoterModal">+</button></h4>
+	  <div class="table-responsive">
+	    <table class="table table-bordered table-hover mt-3">
+	      <thead>
+		<tr>
+		  <th>
+		    ID
+		  </th>
+		  <th>
+		    Name
+		  </th>
+		  <th>
+		    Grade
+		  </th>
+		  <th>
+		    Actions
+		  </th>
+		</tr>
+	      </thead>
+	      <tbody>
+	      {% for voter in voters_list %}
+		<tr>
+		  <td>
+			  {{ voter.user.username}} 
+		  </td>
+		  <td>
+			  {{ voter.name }}
+		  </td>
+		  <td>
+			  {{ voter.grade }} 
+		  </td>
+		  <td>
+			  <button class="btn btn-sm btn-outline-danger" onclick="document.location = '/manage/voters/delete/{{voter.user.username}}'">Delete</button>
+		  </td>
+		</tr>
+		{% endfor %}
+	      </tbody>
+	    </table>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+

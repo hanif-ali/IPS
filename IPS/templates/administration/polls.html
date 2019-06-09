@@ -1,0 +1,100 @@
+{% extends 'administration/base.html' %}
+
+{% block content %}
+
+{% if request.GET.invalidinput %}
+  <div class="alert alert-danger">Could not create a new Poll. The input provided was invalid.
+  </div>
+{% endif %}
+
+{% if request.GET.added %}
+  <div class="alert alert-success">The Poll was added successfully.
+  </div>
+{% endif %}
+
+{% if request.GET.deleted %}
+  <div class="alert alert-success">The Poll was deleted successfully.
+  </div>
+{% endif %}
+
+{% if request.GET.deletefail %}
+  <div class="alert alert-danger">Unable to delete the given Poll.
+  </div>
+{% endif %}
+
+
+  <div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+      <div class="card">
+	<div class="card-body">
+		<h4 class="card-title"><b>POLLS</b> <button class="btn btn-outline-primary btn-icons btn-rounded float-right" data-toggle="modal" data-target="#newPollModal">+</button></h4>
+	  <div class="table-responsive">
+	    <table class="table table-bordered table-hover mt-3">
+	      <thead>
+		<tr>
+		  <th>
+		    Poll
+		  </th>
+		  <th>
+		    Progress
+		  </th>
+		  <th>
+		    Candidates
+		  </th>
+		  <th>
+		    Status
+		  </th>
+		  <th>
+		    Actions
+		  </th>
+		</tr>
+	      </thead>
+	      <tbody>
+	      {% for poll_data in all_polls %}
+		<tr>
+		  <td>
+			  {{ poll_data.0.grade.name }} - {{ poll_data.0.house.name }} {{ poll_data.0.category }}
+		  </td>
+		  <td>
+		    <div class="progress">
+			    <div class="progress-bar bg-success" role="progressbar" style="width: {{poll_data.1}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+		    </div>
+		  </td>
+		  <td>
+			  {{ poll_data.0.candidates.all.count}}
+		  </td>
+		  <td>
+			  {% if poll_data.0.active  %}
+			  <label class="badge badge-success">Active</label>
+			  {% else %}
+			  <label class="badge badge-warning">Inactive</label>
+			  {% endif %}
+		  </td>
+		  <td>
+			  <button class="btn btn-sm btn-outline-success" onclick="document.location='/manage/polls/analysis/{{poll_data.0.id}}';">Analysis</button>
+			  <button class="btn btn-sm btn-outline-danger" meta="{{poll_data.0.id}}" onclick="confirmpolldelete(this)">Delete</button>
+		  </td>
+		</tr>
+		{% endfor %}
+	      </tbody>
+	    </table>
+	  </div>
+	</div>
+      </div>
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block addcss %}
+	<script>
+		function confirmpolldelete(btn){
+			confirmation = confirm("Are you sure you want to delete the selected Poll?")
+			poll_id = $(btn).attr("meta")
+			if(confirmation){
+				document.location = "/manage/polls/delete/"+poll_id
+			}
+		}
+	</script>
+
+{% endblock %}
