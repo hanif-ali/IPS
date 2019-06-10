@@ -109,7 +109,7 @@ def login(request):
         else:
             return render(request, "vote/login.html", {"error":True})
         
-    return render(request, "vote/login.html", {})
+    return render(request, "vote/login.html", locals())
 
 
 def logout(request):

@@ -19,6 +19,7 @@
 
     <!-- Custom CSS for this Application -->
     <link rel="stylesheet" href="{% static 'vote/css/style.css' %}"/>
+
     {% block addcss %}{% endblock %}
 
   </head>
@@ -34,6 +35,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
+		  {% block navlinks %}
             <li class="nav-item active">
               <a class="nav-link" href="#">Vote
                 <span class="sr-only">(current)</span>
@@ -45,6 +47,7 @@
             <li class="nav-item">
 		    <a class="nav-link" href="/logout/">Logout</a>
             </li>
+	    {% endblock %}
           </ul>
         </div>
       </div>
@@ -54,9 +57,8 @@
 
 
     <!-- headline --> 
-    <div class="alert alert-success mx-3 mt-2" style="background:rgba(0,255,0,0.1);border:1px solid #000000;color:black">
-    {% block headline %}{% endblock %}
-    </div>
+    {% block headline %}
+    {% endblock %}
     <!-- end of headline-->
 
 
