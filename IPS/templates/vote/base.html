@@ -28,14 +28,14 @@
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container p-0">
+      <div class="container p-0 ml-2" style="width:100%">
       <a class="navbar-brand" href="#">{% block navtitle %}HOUSE SYSTEM ELECTIONS PORTAL{% endblock %}</a>
+		  {% block navlinks %}
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
-		  {% block navlinks %}
             <li class="nav-item active">
               <a class="nav-link" href="#">Vote
                 <span class="sr-only">(current)</span>
@@ -100,7 +100,7 @@
 							   </ol>
 						   </div>
 						   <div class="card-footer">
-							   <button type"button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							   <button type"button" class="btn btn-danger float-right mb-2" data-dismiss="modal">Close</button>
 						   </div>
 
 					    </div>
