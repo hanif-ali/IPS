@@ -65,9 +65,9 @@
 		  </td>
 		  <td>
 			  {% if poll_data.0.active  %}
-			  <label class="badge badge-success">Active</label>
+			  <label class="badge badge-success" meta="{{poll_data.0.id}}" onclick="changepollstatus(this);">Active</label>
 			  {% else %}
-			  <label class="badge badge-warning">Inactive</label>
+			  <label class="badge badge-warning" meta="{{poll_data.0.id}}" onclick="changepollstatus(this);">Inactive</label>
 			  {% endif %}
 		  </td>
 		  <td>
@@ -86,7 +86,7 @@
 
 {% endblock %}
 
-{% block addcss %}
+{% block addscript %}
 	<script>
 		function confirmpolldelete(btn){
 			confirmation = confirm("Are you sure you want to delete the selected Poll?")
@@ -95,6 +95,24 @@
 				document.location = "/manage/polls/delete/"+poll_id
 			}
 		}
+
+		function changepollstatus(badge){
+			id = $(badge).attr("meta");
+			$.get('/manage/ajaxhandlers/changepollstatus/'+id, function(response){
+				if(response=="active"){
+					$(badge).html("Active");
+					$(badge).attr("class", "badge badge-success");	
+				}else{
+					if(response=="inactive"){
+						$(badge).html("Inactive");
+						$(badge).attr("class", "badge badge-warning");	
+					}
+				}
+					
+
+			});
+		}
+
 	</script>
 
 {% endblock %}

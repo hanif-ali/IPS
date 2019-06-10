@@ -250,6 +250,25 @@ def getcandidatename(request):
         return HttpResponse("~")
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
+def changepollstatus(request, poll_id):
+    try:
+        poll = Poll.objects.get(id=poll_id)
+        if poll.active:
+            poll.active = False
+            poll.save()
+            return HttpResponse("inactive")
+        else:
+            poll.active = True
+            poll.save()
+            return HttpResponse("active")
+    except:
+        return HttpResponse("fail")
+
+
+
+
 def generate_random_key(space):
     return "".join(random.sample(space, 6))
 
@@ -283,4 +302,3 @@ def generateids(request):
             return HttpResponseRedirect("/manage/generateids?invalid_pass=True")
 
     
-

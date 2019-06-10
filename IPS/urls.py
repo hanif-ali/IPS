@@ -37,8 +37,9 @@ urlpatterns = [
     path('manage/polls/add', adminviews.addpoll),
     path('manage/ajaxhandlers/getcandidatename', adminviews.getcandidatename),
     path('manage/polls/delete/<int:poll_id>', adminviews.deletepoll),
+    path('manage/ajaxhandlers/changepollstatus/<int:poll_id>', adminviews.changepollstatus),
     path('manage/polls/analysis/<int:poll_id>', adminviews.pollanalysis),
 
-    path('manage/generateids', adminviews.generateids)
+    path('manage/generateids', adminviews.generateids),
 
 ]

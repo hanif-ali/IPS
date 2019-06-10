@@ -15,8 +15,8 @@
 				<form action="/manage/voters/add" method="POST">
 					{% csrf_token %}
 					<div class="input-group">
-						<input class="form-control m-1" type="Number" placeholder="ID" name="voter_id">
-						<select class="form-control m-1" name="grade">
+						<input class="form-control m-1" type="Number" placeholder="ID" name="voter_id" required>
+						<select class="form-control m-1" name="grade" required>
 							<option>Select Grade</option>
 							{% for grade in grades %}
 							<option value="{{grade.id}}">{{grade.name}}</option>
@@ -24,7 +24,7 @@
 						</select>
 					</div>
 					<div class="input-group">
-						<input class="form-control m-1" type="text" placeholder="Name" name="name">
+						<input class="form-control m-1" type="text" placeholder="Name" name="name" required>
 					</div>
 					<input type="submit" class="m-1 btn btn-primary" value="Add" class="form-control"> 
 					<input class="m-1 btn btn-secondary" value="Cancel" data-dismiss="modal" class="form-control"> 
@@ -51,7 +51,7 @@
 					{% csrf_token %}
 					<div class="input-group">
 						<input type="hidden" name="filter_type" value="id">
-						<input class="form-control" name="filter_key" type="Number" placeholder="By ID">
+						<input class="form-control" name="filter_key" type="Number" placeholder="By ID" required>
 						<div class="input-group-append">
 							<input type="submit" value="Search" class="form-control"> 
 						</div>
@@ -61,7 +61,7 @@
 					{% csrf_token %}
 					<div class="input-group">
 						<input type="hidden" name="filter_type" value="name">
-						<input class="form-control" type="text" name="filter_key" placeholder="By Name">
+						<input class="form-control" type="text" name="filter_key" placeholder="By Name" required>
 						<div class="input-group-append">
 							<input type="submit" value="Search" class="form-control"> 
 						</div>
@@ -72,7 +72,7 @@
 					{% csrf_token %}
 					<div class="input-group">
 						<input type="hidden" name="filter_type" value="grade">
-						<select class="form-control" name="filter_key">
+						<select class="form-control" name="filter_key" required>
 							{% for grade in grades %}
 							<option value="{{grade.name}}">{{grade.name}}</option>
 							{% endfor %}

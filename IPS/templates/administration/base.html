@@ -54,12 +54,11 @@
 							<option value="{{house.id}}">{{house.name}}</option>
 							{% endfor %}
 						</select>
-						<input type="number" class="form-control m-1" name="number_of_candidates" placeholder="Number of Candidates" onchange="loadcandidatefields(this);">
+						<input type="number" class="form-control m-1" name="number_of_candidates" placeholder="Number of Candidates" onchange="loadcandidatefields(this);" required>
 					</div>
 
 
 					<div id="candidatefields"> </div>
-
 					<div class="input-group mt-2">
 						<input type="submit" class="btn btn-primary ml-2" value="Next" class="form-control">
 						<button type="button" class="btn btn-secondary ml-2" value="Next" data-dismiss="modal" class="form-control">Cancel</button>
@@ -261,7 +260,7 @@
 				candidate_html = candidate_html+"<input type='file' class='form-control' class='id'>\n";	
 				candidate_html = candidate_html+"</div>\n\n";
 			}
-			$("#candidatefields").append(candidate_html); // Add the HTML
+			$("#candidatefields").html(candidate_html); // Add the HTML
 
 		};
 
