@@ -234,20 +234,28 @@ def generate_random_key(space):
 def generateids(request):
     response = ""
 
-    for student in Student.objects.all():
-        # Get the details of the student
-        user = student.user
-        name = student.name
-        student_id = user.username
-        #Generate a random key
-        passkey = generate_random_key(string.ascii_letters + string.digits)
-        # Set the users password to the randomly generated passkey
-        user.set_password(passkey)
-        user.save()
+    try:
+        password = request.POST["password"]
+    except:
+        return render(request, "administration/generate_id_confirm.html", {})
+    else:
+        if request.user.check_password(password):
+            for student in Student.objects.all():
+                # Get the details of the student
+                user = student.user
+                name = student.name
+                student_id = user.username
+                #Generate a random key
+                passkey = generate_random_key(string.ascii_letters + string.digits)
+                # Set the users password to the randomly generated passkey
+                user.set_password(passkey)
+                user.save()
 
-        response = response + "<p>ID={}, Name={}, Passkey={}</p>".format(student_id, name, passkey)
+                response = response + "<p>ID={}, Name={}, Passkey={}</p>".format(student_id, name, passkey)
 
-    return HttpResponse(response)
+            return HttpResponse(response)
+        else:
+            return HttpResponseRedirect("/manage/generateids?invalid_pass=True")
 
     
 

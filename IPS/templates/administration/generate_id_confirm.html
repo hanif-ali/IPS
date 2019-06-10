@@ -1,0 +1,38 @@
+{% extends 'administration/base.html' %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-12 grid-margin stretch-card">
+		<div class="card">
+			<div class="card-body">
+
+				{% if request.GET.invalid_pass %}
+					<div class="alert alert-danger mb-4">The Password you entered is invalid</div>
+				{% endif %}
+
+				<h4 class="card-title"><b>GENERATE RANDOM KEYS</b></h4>
+
+				<div class="border mb-4 p-3">
+					<p>Clicking on Submit below will:</p>
+					<ul>
+						<li>Overwrite existing Passkeys of all the users.</li>
+						<li>Generate new Passkeys for all the users.</li>
+						<li>Show the passkeys on this page. <b>The passkeys will be shown only once</b> and destroyed
+						     thereafter beacause the Passkeys are stored in the database as SHA-256 hashes and not plaintext.</li>
+					</ul>
+					<b>Generation of the Random passkey may take some time depending on your database size and your server speed.</b>
+					<div class="alert alert-warning mt-4"><b>Warning</b>: Generating Random Passkeys will overwrite all previously generated keys.</div>
+
+				</div>
+				<form action="" method="POST" class="form-inline" onsubmit="False">
+					{% csrf_token %}
+					<input class="form-control mr-3" name='password' placeholder="Enter Your Password" required>
+					<input type="submit" class="btn btn-primary" value="Generare New Passkeys">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
