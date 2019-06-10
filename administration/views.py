@@ -6,9 +6,15 @@ from administration.forms import VoterForm, dynamicpollform
 from django.db.utils import IntegrityError
 from django.db.models import QuerySet
 import time, random, string
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 
+def is_admin(user):
+    return user.is_superuser
+
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=True')
 def index(request):
     grades = Grade.objects.all()
     houses = House.objects.all()
@@ -44,6 +50,9 @@ def index(request):
     return render(request, "administration/index.html", locals())
 
 
+
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def polls(request):
     grades = Grade.objects.all()
     houses = House.objects.all()
@@ -61,6 +70,8 @@ def polls(request):
     return render(request, "administration/polls.html", locals())
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def voters(request):
     grades = Grade.objects.all()
     houses = House.objects.all()
@@ -92,6 +103,8 @@ def voters(request):
 
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def addvoter(request):
     try:
         voter_data = request.POST
@@ -117,6 +130,8 @@ def addvoter(request):
 
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def deletevoter(request, voter_id):
     try:
         voter_user = User.objects.get(username=voter_id)
@@ -129,6 +144,8 @@ def deletevoter(request, voter_id):
     return HttpResponseRedirect("/manage/voters?voter_deleted=True")
 
     
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def addpoll(request):
     number_of_candidates = request.POST["number_of_candidates"]
     PollForm = dynamicpollform(int(number_of_candidates))
@@ -176,6 +193,8 @@ def addpoll(request):
         return HttpResponseRedirect("/manage/polls?invalidinput=True")
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def deletepoll(request, poll_id):
     try:
         poll = Poll.objects.get(id=poll_id)
@@ -190,6 +209,8 @@ def deletepoll(request, poll_id):
     return HttpResponseRedirect("/manage/polls?deleted=True")
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def pollanalysis(request, poll_id):
     try:
         poll = Poll.objects.get(id = poll_id)
@@ -214,6 +235,8 @@ def pollanalysis(request, poll_id):
 
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def getcandidatename(request):
     try: 
         candidate_id = request.GET["id"];
@@ -231,6 +254,8 @@ def generate_random_key(space):
     return "".join(random.sample(space, 6))
 
 
+@login_required(login_url="/login")
+@user_passes_test(is_admin, '/login?not_admin=true')
 def generateids(request):
     response = ""
 
