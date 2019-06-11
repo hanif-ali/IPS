@@ -4,9 +4,12 @@
 {% block title %}Cast Your Vote{% endblock %}
 
 {% block headline %}
-<div class="alert alert-success mx-3 mt-2" style="background:rgba(0,255,0,0.1);border:1px solid #000000;color:black">
-	{{student.name}}, Kindly Select Any Of The Following Candidates For {{poll.house.name}} {{poll.category}}{% endblock %}
-</div>
+	<div class="alert alert-success mx-3 mt-2" style="background:rgba(0,255,0,0.1);border:1px solid #000000;color:black">
+		{{student.name}}, Kindly Select Any Of The Following Candidates For {{poll.house.name}} {{poll.category}}
+	</div>
+{% endblock %}
+
+
 	
 {% block content %}
 
