@@ -5,8 +5,11 @@ from django.contrib.auth.models import User
 from administration.forms import VoterForm, dynamicpollform
 from django.db.utils import IntegrityError
 from django.db.models import QuerySet
-import time, random, string
+import time, random, string, os
 from django.contrib.auth.decorators import login_required, user_passes_test
+from openpyxl import load_workbook
+from django.core.files.storage import default_storage
+from django.conf import settings
 
 # Create your views here.
 
@@ -302,3 +305,15 @@ def generateids(request):
             return HttpResponseRedirect("/manage/generateids?invalid_pass=True")
 
     
+
+def importvoters(request):
+    try:
+        file_obj = request.FILES["workbookfile"]
+    except:
+        return render(request, "administration/loadvoters.html")
+    dest_filename = os.path.join(settings.BASE_DIR,'tempfile.xlsx')
+    with open(dest_filename, "wb+") as dest:
+        for chunk in file_obj.chunks():
+            dest.write(chunk)
+    wb = load_workbook(dest_filename)
+    return HttpResponse(wb)
