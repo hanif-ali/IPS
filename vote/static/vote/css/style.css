@@ -6,3 +6,18 @@
 .candidate-symbol{
 }
 
+.poll-house:first-child{
+	margin-left: auto;
+}
+.poll-house:last-child{
+	margin-right: auto;
+}
+	
+.poll-candidate:first-child{
+	margin-left:auto;
+}
+
+.poll-candidate:last-child{
+	margin-right:auto;
+}
+

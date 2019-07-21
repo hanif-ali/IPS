@@ -30,7 +30,7 @@
 
 	{% for poll in polls %}
 
-	<div class="col-lg-3 col-md-4 col-sm-6 my-2">
+	<div class="poll-house col-lg-3 col-md-4 col-sm-6 my-2">
 		<div class="card {% if poll.0 %}bg-secondary{% else %}bg-primary{% endif %}">
 		    <div class="card-header text-center">
 			    <p class="card-text font-weight-bold">{{poll.1.house.name}} {{poll.1.category}}<span class="badge badge-success ml-3">{{poll.1.grade.name}}</span></p>
