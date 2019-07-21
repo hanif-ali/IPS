@@ -317,3 +317,19 @@ def importvoters(request):
             dest.write(chunk)
     wb = load_workbook(dest_filename)
     return HttpResponse(wb)
+
+def changepass(request):
+    try:
+        oldpassword = request.POST["oldpassword"]
+        newpassword = request.POST["newpassword"]
+    except:
+        return render(request, "administration/change_pass.html", {})
+    if request.user.check_password(oldpassword):
+        request.user.set_password(newpassword)
+        request.user.save()
+        return HttpResponseRedirect("/manage/changepass?success=True")
+    else:
+        return HttpResponseRedirect("/manage/changepass?wrong=True")
+
+
+
