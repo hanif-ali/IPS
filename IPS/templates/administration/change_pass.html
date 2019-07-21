@@ -1,0 +1,32 @@
+{% extends 'administration/base.html' %}
+
+{% block content %}
+
+<div class="row">
+	<div class="col-lg-12 grid-margin stretch-card">
+		<div class="card">
+			<div class="card-body"j
+
+				<h4 class="card-title"><b>CHANGE PASSWORD</b></h4>
+
+
+				{% if request.GET.success %}
+					<div class="alert alert-success my-4">The Password was changed successfully.</div>
+				{% endif %}
+
+				{% if request.GET.wrong %}
+					<div class="alert alert-danger my-4">The Password you entered is invalid</div>
+				{% endif %}
+
+				<form action="" method="POST">
+					{% csrf_token %}
+					<input type="password" class="form-control w-25 my-2" name='oldpassword' placeholder="Old Password" required>
+					<input type="password" class="form-control w-25 my-2" name='newpassword' placeholder="New Password" required>
+					<input type="submit" class="btn btn-primary my-2" value="Change Password">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

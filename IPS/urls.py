@@ -43,4 +43,6 @@ urlpatterns = [
     path('manage/generateids', adminviews.generateids),
     path('manage/voters/import', adminviews.importvoters), 
 
+    path('manage/changepass', adminviews.changepass),
+
 ]
