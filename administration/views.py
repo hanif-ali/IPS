@@ -21,14 +21,14 @@ def is_admin(user):
 def index(request):
     grades = Grade.objects.all()
     houses = House.objects.all()
-    
+
     # Data for Summary Cards
     active_polls = Poll.objects.filter(active=True) # All Active Polls
     inactive_polls = Poll.objects.filter(active=False) # All Inactive Polls
     no_of_students = Student.objects.count() # Number of Registered Students
     no_of_candidates = Candidate.objects.count() # Number of Registered Candidates
     votes_casted = Vote.objects.count() # Total Votes Casted
-    
+
     last_vote = Vote.objects.order_by("-poll_date", "-poll_time")[0]
     last_vote_date = last_vote.poll_date
     last_vote_time = last_vote.poll_time
@@ -67,7 +67,10 @@ def polls(request):
             no_of_voting_students = Student.objects.count()
         else:
             no_of_voting_students = Student.objects.filter(grade = poll.grade).count()
-        progress = no_of_votes*100/no_of_voting_students
+        if no_of_voting_students:
+            progress = no_of_votes*100/no_of_voting_students
+        else:
+            progress = 0
         all_polls.append((poll, progress))
 
     return render(request, "administration/polls.html", locals())
@@ -146,7 +149,7 @@ def deletevoter(request, voter_id):
     voter_user.delete()
     return HttpResponseRedirect("/manage/voters?voter_deleted=True")
 
-    
+
 @login_required(login_url="/login")
 @user_passes_test(is_admin, '/login?not_admin=true')
 def addpoll(request):
@@ -182,7 +185,7 @@ def addpoll(request):
                     Candidate(student = candidate_student).save()
                     candidate = Candidate.objects.filter(student = candidate_student)
                 all_candidates = all_candidates.union(candidate)
-                
+
 
             except:
                 new_poll.delete()
@@ -241,7 +244,7 @@ def pollanalysis(request, poll_id):
 @login_required(login_url="/login")
 @user_passes_test(is_admin, '/login?not_admin=true')
 def getcandidatename(request):
-    try: 
+    try:
         candidate_id = request.GET["id"];
         try:
             candidate = User.objects.get(username=str(candidate_id)).student_set.get()
@@ -304,7 +307,7 @@ def generateids(request):
         else:
             return HttpResponseRedirect("/manage/generateids?invalid_pass=True")
 
-    
+
 
 def importvoters(request):
     try:
