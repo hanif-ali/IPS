@@ -1,7 +1,7 @@
 # IPS - Intranet Polling System
 
 ### A Django-based Application for conducting supervised polls in an intranet.
-**Note: The project is in development phase and does not have any stable release**
+Dummy project
 
 ## Features
 - Creation of Multiple Polls with Different Criteria
